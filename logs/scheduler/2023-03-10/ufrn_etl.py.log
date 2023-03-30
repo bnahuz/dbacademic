@@ -1,0 +1,182 @@
+[2023-03-10T22:58:04.805+0000] {processor.py:153} INFO - Started process (PID=2700) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:58:04.805+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T22:58:04.806+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:58:04.806+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:58:04.811+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:58:04.810+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T22:58:04.811+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:58:04.826+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.024 seconds
+[2023-03-10T22:58:34.968+0000] {processor.py:153} INFO - Started process (PID=2762) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:58:34.978+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T22:58:34.979+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:58:34.979+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:58:34.986+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:58:34.985+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T22:58:34.987+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:58:35.010+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.045 seconds
+[2023-03-10T22:59:05.111+0000] {processor.py:153} INFO - Started process (PID=2830) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:59:05.122+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T22:59:05.123+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:59:05.123+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:59:05.128+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:59:05.127+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T22:59:05.128+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:59:05.151+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.043 seconds
+[2023-03-10T22:59:35.298+0000] {processor.py:153} INFO - Started process (PID=2883) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:59:35.309+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T22:59:35.310+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:59:35.310+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:59:35.314+0000] {logging_mixin.py:137} INFO - [2023-03-10T22:59:35.314+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T22:59:35.314+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T22:59:35.333+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.036 seconds
+[2023-03-10T23:00:05.483+0000] {processor.py:153} INFO - Started process (PID=2960) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:00:05.494+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:00:05.495+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:00:05.495+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:00:05.504+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:00:05.503+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:00:05.504+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:00:05.526+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.055 seconds
+[2023-03-10T23:00:35.637+0000] {processor.py:153} INFO - Started process (PID=3013) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:00:35.648+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:00:35.648+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:00:35.648+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:00:35.654+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:00:35.653+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:00:35.654+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:00:35.669+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.034 seconds
+[2023-03-10T23:01:05.841+0000] {processor.py:153} INFO - Started process (PID=3066) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:01:05.852+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:01:05.852+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:01:05.852+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:01:05.857+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:01:05.856+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:01:05.857+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:01:05.873+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.036 seconds
+[2023-03-10T23:01:36.008+0000] {processor.py:153} INFO - Started process (PID=3128) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:01:36.009+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:01:36.010+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:01:36.009+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:01:36.015+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:01:36.015+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:01:36.016+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:01:36.038+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.033 seconds
+[2023-03-10T23:02:06.183+0000] {processor.py:153} INFO - Started process (PID=3196) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:02:06.184+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:02:06.185+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:02:06.185+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:02:06.190+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:02:06.190+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:02:06.191+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:02:06.213+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.034 seconds
+[2023-03-10T23:02:36.375+0000] {processor.py:153} INFO - Started process (PID=3249) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:02:36.386+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:02:36.387+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:02:36.386+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:02:36.391+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:02:36.391+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:02:36.392+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:02:36.417+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.044 seconds
+[2023-03-10T23:03:06.541+0000] {processor.py:153} INFO - Started process (PID=3302) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:03:06.552+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:03:06.553+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:03:06.553+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:03:06.559+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:03:06.559+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:03:06.560+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:03:06.581+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.042 seconds
+[2023-03-10T23:03:36.726+0000] {processor.py:153} INFO - Started process (PID=3379) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:03:36.736+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:03:36.737+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:03:36.737+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:03:36.742+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:03:36.741+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:03:36.742+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:03:36.760+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.037 seconds
+[2023-03-10T23:04:06.878+0000] {processor.py:153} INFO - Started process (PID=3432) to work on /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:04:06.889+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/ufrn_etl.py for tasks to queue
+[2023-03-10T23:04:06.890+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:04:06.890+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:04:06.895+0000] {logging_mixin.py:137} INFO - [2023-03-10T23:04:06.894+0000] {dagbag.py:343} ERROR - Failed to import: /opt/airflow/dags/ufrn_etl.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 339, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/ufrn_etl.py", line 7, in <module>
+    from intake.endpoints.UFRN import *
+ModuleNotFoundError: No module named 'intake'
+[2023-03-10T23:04:06.895+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/ufrn_etl.py
+[2023-03-10T23:04:06.911+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/ufrn_etl.py took 0.035 seconds

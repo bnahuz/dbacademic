@@ -1,0 +1,24 @@
+[2023-03-30T04:47:15.758+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: ufrn_etl.drop_docentes scheduled__2023-03-28T00:00:00+00:00 [queued]>
+[2023-03-30T04:47:15.780+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: ufrn_etl.drop_docentes scheduled__2023-03-28T00:00:00+00:00 [queued]>
+[2023-03-30T04:47:15.781+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-30T04:47:15.781+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 2
+[2023-03-30T04:47:15.781+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-30T04:47:15.819+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): drop_docentes> on 2023-03-28 00:00:00+00:00
+[2023-03-30T04:47:15.844+0000] {standard_task_runner.py:55} INFO - Started process 2186 to run task
+[2023-03-30T04:47:15.856+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'ufrn_etl', 'drop_docentes', 'scheduled__2023-03-28T00:00:00+00:00', '--job-id', '22', '--raw', '--subdir', 'DAGS_FOLDER/ufrn_dag.py', '--cfg-path', '/tmp/tmpqmrbo9eb']
+[2023-03-30T04:47:15.860+0000] {standard_task_runner.py:83} INFO - Job 22: Subtask drop_docentes
+[2023-03-30T04:47:16.000+0000] {task_command.py:388} INFO - Running <TaskInstance: ufrn_etl.drop_docentes scheduled__2023-03-28T00:00:00+00:00 [running]> on host 86c02526f58b
+[2023-03-30T04:47:16.146+0000] {taskinstance.py:1509} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_EMAIL=breno.nahuz@discente.ufma.br
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=ufrn_etl
+AIRFLOW_CTX_TASK_ID=drop_docentes
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-28T00:00:00+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2023-03-28T00:00:00+00:00
+[2023-03-30T04:47:19.040+0000] {python.py:177} INFO - Done. Returned value was: {'status': 'Success droping collection.', 'count': 0}
+[2023-03-30T04:47:19.073+0000] {taskinstance.py:1323} INFO - Marking task as SUCCESS. dag_id=ufrn_etl, task_id=drop_docentes, execution_date=20230328T000000, start_date=20230330T044715, end_date=20230330T044719
+[2023-03-30T04:47:19.140+0000] {local_task_job.py:208} INFO - Task exited with return code 0
+[2023-03-30T04:47:19.175+0000] {taskinstance.py:2578} INFO - 0 downstream tasks scheduled from follow-on schedule check
