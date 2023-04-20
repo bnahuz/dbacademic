@@ -7,13 +7,13 @@ from plugins.utils.mongo import get_mongo_db, insert_many, drop_collection
 ifsm_consumer = CkanConsumer('dados.ifms.edu.br', secure=False)
 
 #Curso
-def etl_courses() -> pd.DataFrame:
+def etl_courses():
     cursos_ifsm = ifsm_consumer.request('b1913941-fcd6-4216-882f-fc2a81121bcc')
     insert_many(get_mongo_db('ifsm'),'cursos',cursos_ifsm.to_dict('records'))
     return "Inserted courses"
 
 #Discente
-def etl_discentes() -> pd.DataFrame:
+def etl_discentes():
     discentes_ifsm = ifsm_consumer.request('b8b4dfdf-98ef-4d57-baff-75c163be6e9a')
     insert_many(get_mongo_db('ifsm'),'discentes',discentes_ifsm.to_dict('records'))
     return 'Inserted students'
