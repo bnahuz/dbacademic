@@ -2,8 +2,11 @@ import requests
 import pandas as pd
 from time import sleep
 class CkanConsumer:
-    def __init__(self, main_url):
-        self.url = f'https://{main_url}/api/action/datastore_search'
+    def __init__(self, main_url:str, secure:bool = True):
+        if secure:
+            self.url = f'https://{main_url}/api/action/datastore_search'
+        else:
+            self.url = f'http://{main_url}/api/action/datastore_search'
 
     def request(self, resource_id) -> pd.DataFrame:
         params = {

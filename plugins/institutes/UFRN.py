@@ -22,23 +22,22 @@ def drop_from_ufrn_db_grupos_pesquisa() -> dict:
 def drop_from_ufrn_db_unidades() -> dict:
     return drop_collection(get_mongo_db('ufrn'),'unidades')
 
-
 ufrn_consumer = CkanConsumer('http://dados.ufrn.br')
 
 #Docente
-def get_docentes() -> pd.DataFrame:
+def etl_docentes() -> pd.DataFrame:
     docentes_ufrn = ufrn_consumer.request('6a8e5461-e748-45c6-aac6-432188d88dde')
     insert_many(get_mongo_db('ufrn'),'docentes',docentes_ufrn.to_dict('records'))
     return 'Inserted docentes'
 
 #Curso
-def get_courses() -> pd.DataFrame:
+def etl_courses() -> pd.DataFrame:
     cursos_ufrn = ufrn_consumer.request('a10bc434-9a2d-491a-ae8c-41cf643c35bc')
     insert_many(get_mongo_db('ufrn'),'cursos',cursos_ufrn.to_dict('records'))
     return "Inserted courses"
 
 #Discente
-def get_discentes() -> pd.DataFrame:
+def etl_discentes() -> pd.DataFrame:
     discentes_ufrn = ufrn_consumer.request('14afbb6c-395e-411c-b24d-0e494cb95866')
     insert_many(get_mongo_db('ufrn'),'discentes',discentes_ufrn.to_dict('records'))
     return 'Inserted students'
