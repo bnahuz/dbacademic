@@ -5,7 +5,7 @@ from plugins.consumers.CkanConsumer import CkanConsumer
 from plugins.utils.mongo import get_mongo_db, insert_many, drop_collection
 
 #Dados desatualizados desde 2018
-ufpi_consumer = CkanConsumer('dados.ufpi.br', secure=True)
+ufpi_consumer = CkanConsumer('dados.ufpi.br', secure=True) 
 
 #https://dados.ufpi.br/dataset/efe01f87-fd4c-4cc1-a081-5c8d29cf7be0/resource/00658685-cd1b-47f4-9f42-107c45a1e4e1/download/discentesgraduacaoativos2bimestre.csv
 
