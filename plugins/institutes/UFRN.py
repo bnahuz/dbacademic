@@ -22,7 +22,7 @@ def drop_from_ufrn_db_grupos_pesquisa() -> dict:
 def drop_from_ufrn_db_unidades() -> dict:
     return drop_collection(get_mongo_db('ufrn'),'unidades')
 
-ufrn_consumer = CkanConsumer('http://dados.ufrn.br')
+ufrn_consumer = CkanConsumer('dados.ufrn.br')
 
 #Docente
 def etl_docentes() -> pd.DataFrame:
