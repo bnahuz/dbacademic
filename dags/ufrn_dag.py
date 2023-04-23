@@ -4,7 +4,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from etl.extraction.UFRN import *
+from plugins.institutes.UFRN import *
 
 default_args = {
     'owner': 'airflow',
@@ -13,7 +13,8 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'start_date': days_ago(2),
+    'schedule_interval' : None,
+    'start_date': days_ago(0),
     'retry_delay': timedelta(minutes=5),
 }
 
@@ -62,41 +63,22 @@ drop_unidades = PythonOperator(
 
 run_intake_docentes = PythonOperator(
     task_id='run_intake_docentes',
-    python_callable=get_docentes,
+    python_callable=etl_docentes,
     dag=dag,
 )
 
 run_intake_discentes = PythonOperator(
     task_id='run_intake_discentes',
-    python_callable=get_students,
-    dag=dag,
-)
-
-run_intake_tccs = PythonOperator(
-    task_id='run_intake_tccs',
-    python_callable=get_tccs,
+    python_callable=etl_discentes,
     dag=dag,
 )
 
 run_intake_courses = PythonOperator(
     task_id='run_intake_courses',
-    python_callable=get_courses,
-    dag=dag,
-)
-
-run_intake_units = PythonOperator(
-    task_id='run_intake_units',
-    python_callable=get_units,
-    dag=dag,
-)
-
-run_intake_research_groups = PythonOperator(
-    task_id='run_intake_research_groups',
-    python_callable=get_research_groups,
+    python_callable=etl_courses,
     dag=dag,
 )
 
 
 [drop_docentes,drop_discentes,drop_tccs,drop_grupos_pesquisa,drop_unidades,drop_cursos] >> \
-run_intake_docentes >> run_intake_discentes >> run_intake_tccs  >> run_intake_research_groups >> \
-run_intake_units >> run_intake_courses
+run_intake_docentes >> run_intake_discentes >> run_intake_courses
