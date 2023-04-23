@@ -57,3 +57,11 @@ def mapper_cursos(
         'instituicao': instituto
     }), axis = 1)
     return result
+
+def trunc_date(df: pd.DataFrame, coluna_datetime, type :str) -> pd.DataFrame:
+    if type == 'ano_periodo':
+        df[coluna_datetime] = pd.to_datetime(df[coluna_datetime], format='%Y.%m')
+        df['ano_ingresso'] = df[coluna_datetime].dt.year
+        df['periodo_ingresso'] = df[coluna_datetime].dt.month
+        df['periodo_ingresso'] = df['periodo_ingresso'].apply(lambda x: 1 if x == 1 else 2)
+    return df

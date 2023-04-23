@@ -3,6 +3,7 @@ import pandas as pd
 sys.path.append('/opt/airflow/')
 from plugins.consumers.CkanConsumer import CkanConsumer
 from plugins.utils.mongo import get_mongo_db, insert_many, drop_collection
+from plugins.utils.mappers import *
 
 def drop_from_ufrn_db_discentes() -> dict:
     return drop_collection(get_mongo_db('ufrn'),'discentes')
