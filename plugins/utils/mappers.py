@@ -12,6 +12,10 @@ def mapper_discentes(
         periodo_ingresso: str,
         nome_curso: str
     ) -> pd.DataFrame:
+    #create collum if not exists
+    for col in [sexo, ano_ingresso, periodo_ingresso, nome_curso]:
+        if col not in dataframe.columns:
+            dataframe[col] = 0
     result = dataframe.apply(lambda df: pd.Series({
         'nome': str(df[nome_discente]).upper(),
         'id': md5((f"{df[matricula]}{instituto}{resource_id}").encode()).hexdigest(),
@@ -33,6 +37,9 @@ def mapper_docentes(
         periodo_ingresso: str,
         lotacao: str
     ) -> pd.DataFrame:
+    for col in [sexo, ano_ingresso, periodo_ingresso, lotacao]:
+        if col not in dataframe.columns:
+            dataframe[col] = 0
     result = dataframe.apply(lambda df: pd.Series({
         'nome': str(df[nome_docente]).upper(),
         'id': md5((f"{df[siape]}{instituto}{resource_id}").encode()).hexdigest(),
