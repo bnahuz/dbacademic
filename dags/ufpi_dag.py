@@ -4,7 +4,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from plugins.institutes.ufrn import ufrn
+from plugins.institutes.ufpi import *
 from plugins.utils.dag_utils import dynamic_drop
 
 default_args = {
@@ -14,16 +14,15 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'schedule_interval' : None,
+    'schedule_interval' : '@once',
     'start_date': days_ago(0),
     'retry_delay': timedelta(minutes=5),
 }
 
-
 dag = DAG(
-    'ufrn_etl',
+    'ufpi_etl',
     default_args=default_args,
-    description='A simple DAG to extract data from UFRN API',
+    description='A simple DAG to extract data from UFPI API',
     schedule_interval=timedelta(days=1)
 )
 
@@ -36,19 +35,19 @@ for collection in collections:
 
 run_intake_docentes = PythonOperator(
     task_id='run_intake_docentes',
-    python_callable=ufrn.etl_docentes,
+    python_callable=ufpi.etl_docentes,
     dag=dag,
 )
 
 run_intake_discentes = PythonOperator(
     task_id='run_intake_discentes',
-    python_callable=ufrn.etl_discentes,
+    python_callable=ufpi.etl_discentes,
     dag=dag,
 )
 
 run_intake_courses = PythonOperator(
     task_id='run_intake_courses',
-    python_callable=ufrn.etl_courses,
+    python_callable=ufpi.etl_courses,
     dag=dag,
 )
 

@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 sys.path.append('/opt/airflow/')
 from plugins.consumers.CkanConsumer import CkanConsumer
-from plugins.utils.mongo import get_mongo_db, insert_many, drop_collection
+from plugins.utils.mongo import get_mongo_db, insert_many
 
 ufca_consumer = CkanConsumer('dados.ufca.edu.br', secure=True)
 
