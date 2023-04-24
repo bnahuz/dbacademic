@@ -33,27 +33,6 @@ for collection in collections:
     task = dynamic_drop(f'drop_{collection}', 'ufpi', collection, dag)
     drop_collections.append(task)
 
-""" drop_docentes = PythonOperator(
-    task_id='drop_docentes',
-    python_callable=drop_collection,
-    op_kwargs={'institute': 'ufpi', 'collection_name': 'docentes'},
-    dag=dag,
-)
-
-drop_cursos = PythonOperator(
-    task_id='drop_cursos',
-    python_callable=drop_collection,
-    op_kwargs={'institute': 'ufpi', 'collection_name': 'cursos'},
-    dag=dag,
-)
-
-drop_discentes = PythonOperator(
-    task_id='drop_discentes',
-    python_callable=drop_collection,
-    op_kwargs={'institute': 'ufpi', 'collection_name': 'discentes'},
-    dag=dag,
-) """
-
 run_intake_docentes = PythonOperator(
     task_id='run_intake_docentes',
     python_callable=etl_docentes,
