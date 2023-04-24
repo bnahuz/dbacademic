@@ -21,7 +21,8 @@ def insert_many(database, collection_name: str, data: list) -> dict:
         "inserted": collection.count_documents({})
     }
 
-def drop_collection(database, collection_name: str) -> dict:
+def drop_collection(institute:str, collection_name: str) -> dict:
+    database = get_mongo_db(institute)
     collection = database.get_collection(collection_name)
     try:
         collection.drop()
