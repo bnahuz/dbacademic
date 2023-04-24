@@ -4,7 +4,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from plugins.institutes.UFPI import *
+from plugins.institutes.ufpi import *
 from plugins.utils.dag_utils import dynamic_drop
 
 default_args = {
@@ -35,19 +35,19 @@ for collection in collections:
 
 run_intake_docentes = PythonOperator(
     task_id='run_intake_docentes',
-    python_callable=etl_docentes,
+    python_callable=ufpi.etl_docentes,
     dag=dag,
 )
 
 run_intake_discentes = PythonOperator(
     task_id='run_intake_discentes',
-    python_callable=etl_discentes,
+    python_callable=ufpi.etl_discentes,
     dag=dag,
 )
 
 run_intake_courses = PythonOperator(
     task_id='run_intake_courses',
-    python_callable=etl_courses,
+    python_callable=ufpi.etl_courses,
     dag=dag,
 )
 
