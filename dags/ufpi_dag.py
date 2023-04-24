@@ -5,7 +5,6 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 from plugins.institutes.UFPI import *
-from plugins.utils.mongo import drop_collection, get_mongo_db
 from plugins.utils.dag_utils import dynamic_drop
 
 default_args = {
@@ -28,9 +27,11 @@ dag = DAG(
 )
 
 collections = ['docentes', 'discentes', 'cursos']
+drop_collections = []
 
 for collection in collections:
-    dynamic_drop(f'drop_{collection}', 'ufpi', collection, dag)
+    task = dynamic_drop(f'drop_{collection}', 'ufpi', collection, dag)
+    drop_collections.append(task)
 
 """ drop_docentes = PythonOperator(
     task_id='drop_docentes',
@@ -72,5 +73,5 @@ run_intake_courses = PythonOperator(
 )
 
 
-[drop_docentes,drop_discentes,drop_cursos] >> \
+drop_collections >> \
 run_intake_docentes >> run_intake_discentes >> run_intake_courses
