@@ -68,7 +68,7 @@ class Discentes:
         if "sexo" in dict:
             self.sexo = Literal(dict["sexo"])
         if "curso" in dict and dict["curso"] != None:
-            self.curso = URIRef(dict["curso"])
+            self.curso = Literal(dict["curso"]) # URIRef(dict["curso"]) # depois transformar em URI
         if "data_ingresso" in dict:
             self.data_ingresso = Literal (dict["data_ingresso"])
 

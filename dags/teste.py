@@ -1,11 +1,13 @@
 import sys
 from datetime import timedelta
 
-from utils.dag_utils import extract, transform
+from utils.dag_utils import extract, transform,dynamic_ttl
 
+from simpot.serialize import mapper_all,  serialize_to_rdf
 
 import json
 
+import utils
 
 
 
@@ -194,3 +196,6 @@ for institute, values in instituicoes.items():
         dbpedia_url = values["dbpedia_pt"]
         data = transform (data, generic_mapper, dbpedia_url)
         print (data)
+        class_ = getattr(utils.models, collection.capitalize()) 
+        ttl = serialize_to_rdf(data, class_)
+        print (ttl)

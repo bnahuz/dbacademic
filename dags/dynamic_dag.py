@@ -33,6 +33,14 @@ config_dags = {
             "sexo": ["sexo","Sexo"],
             "formacao": ["formacao","escolaridade","TitulacaoServidor","Escolaridade","TITULAÇÃO"],
             "lotacao" :["Órgão de Lotação (SIAPE)", "setor lotacao"]
+        },
+
+        "discentes" : {
+            "nome": ["nome"], 
+            "id" : ["ra"],
+            "matricula" : ["ra"],
+            "data_ingresso" : ["data_inicio"],
+            "curso": ["curso"]
         }
 
     },
@@ -40,6 +48,8 @@ config_dags = {
 
     "instituicoes" : {
 
+
+        
 
         "ufrn": {
             "dbpedia_pt":"http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
@@ -71,15 +81,7 @@ config_dags = {
                 }
         }},
 
-        "ifms" : {
-            "dbpedia_pt":"http://pt.dbpedia.org/resource/Instituto_Federal_de_Mato_Grosso_do_Sul",
-            "colecoes" : {
-            "docentes": {
-                    "consumer": "CkanConsumer",
-                    "main_url": "http://dados.ifms.edu.br",
-                    "params": {"resource_id": "4ccd20e6-703d-4682-a300-26a0e3788a4f"}
-                }
-        }},
+
 
 
       "ufcspa" : {
@@ -169,6 +171,23 @@ config_dags = {
              }
         },
 
+
+        "ifms" : {
+            "dbpedia_pt":"http://pt.dbpedia.org/resource/Instituto_Federal_de_Mato_Grosso_do_Sul",
+            "colecoes" : {
+            "docentes": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "http://dados.ifms.edu.br",
+                    "params": {"resource_id": "4ccd20e6-703d-4682-a300-26a0e3788a4f"}
+                },
+
+            "discentes" : {
+                 "consumer": "CkanConsumer",
+                 "main_url": "http://dados.ifms.edu.br",
+                 "params": {"resource_id": "b8b4dfdf-98ef-4d57-baff-75c163be6e9a"}
+
+            }
+        }},
     }
 
 }

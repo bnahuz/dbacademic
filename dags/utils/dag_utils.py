@@ -112,7 +112,7 @@ def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, 
     ttl_task = []
    
     for collection, params in collections.items():
-        class_ = getattr(rdf.models, collection.capitalize()) 
+        class_ = getattr(utils.models, collection.capitalize()) 
         oper = PythonOperator(
             task_id=f'transform_{collection}',
             # com lambda parece que ele mantem a referencia aos dados
