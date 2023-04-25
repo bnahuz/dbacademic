@@ -4,7 +4,7 @@ from time import sleep
 class CkanConsumer:
     def __init__(self, **kwargs):
         main_url = kwargs['main_url']
-        resource_id = kwargs['main_url']
+        resource_id = kwargs['resource_id']
 
         self.resource_id = resource_id
         self.url = f'{main_url}/api/action/datastore_search'
@@ -22,6 +22,7 @@ class CkanConsumer:
         response = requests.get(self.url, params=params)
         #total = response.json()['result']['total']
         total = 10
+        #print (response.json())
         data.extend(response.json()['result']['records'])
 
         while len(data) < total:

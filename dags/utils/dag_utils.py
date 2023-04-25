@@ -11,7 +11,7 @@ import consumers
 
 import rdf.models
 
-from consumers.CkanConsumer import CkanConsumer
+#from consumers.CkanConsumer import CkanConsumer
 
 
 from simpot.serialize import mapper_all,  serialize_to_rdf, serialize_to_rdf_file
@@ -38,14 +38,16 @@ def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
         dag=dag,
     )
 
+def extract (instituicao, colecao, conf):
+    params = conf['params']
+    print (conf['consumer'])
+    consumer = getattr(consumers, conf['consumer']) (**params)
+    return consumer.request().to_dict('records')
 
 def dynamic_elt(instituicao, colecao, conf, mapeamento):
 
     def f():
-           
-           params = conf['params']
-           consumer = getattr(consumers, conf['consumer']) (**params)
-           data = consumer.request().to_dict('records')
+           data = extract (instituicao, colecao, conf)
            mapper = mapper_generate (data[0], mapeamento[colecao])      
            data = mapper_all(mapper, data)
            insert_many(get_mongo_db(instituicao),colecao,data)
