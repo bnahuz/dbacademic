@@ -23,26 +23,25 @@ def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
     )
 
 
-def save_collection_closure(instituicao,collection, params, mapeamento):
-    def cl ():
-        return save_collection(instituicao,collection, params, mapeamento)
-    return cl
-
 def save_collection(instituicao, colecao, params, mapeamento):
-    if (params["consumer"] == "ckan"):
-            ckan_params = params["consumer_params"]
-            consumer = CkanConsumer(ckan_params["main_url"])
-            dados = consumer.request(ckan_params["resource_id"]) # nao sei se precisaria do pandas
-            dados = dados.to_dict('records')
-            print (dados)     
-            mapper = mapper_generate (dados[0], mapeamento[colecao])      
-            dados = mapper_all(mapper, dados)
-            insert_many(get_mongo_db(instituicao),colecao,dados)
-            return f"Inserted {colecao} in {instituicao} {dados}"
-    else:
-            return params["consumer"]
 
+    def f():
+        if (params["consumer"] == "ckan"):
+                ckan_params = params["consumer_params"]
+                consumer = CkanConsumer(ckan_params["main_url"])
+                dados = consumer.request(ckan_params["resource_id"]) # nao sei se precisaria do pandas
+                dados = dados.to_dict('records')
+                print (dados)     
+                mapper = mapper_generate (dados[0], mapeamento[colecao])      
+                dados = mapper_all(mapper, dados)
+                insert_many(get_mongo_db(instituicao),colecao,dados)
+                return f"Inserted {colecao} in {instituicao} {dados}"
+        else:
+                return params["consumer"]
 
+    return f
+
+# a partir de um dado, e de um mapper generico, retorna um mapper específico
 def mapper_generate (obj, mapeamento):
     new_map = {}
     for collumn, list_collumn in mapeamento.items():
@@ -51,6 +50,8 @@ def mapper_generate (obj, mapeamento):
                 new_map[collumn] = current
                 break
     return new_map
+
+
 
 def dynamic_create_dag(dag_id:str, institute, collections, generic_mapper, schedule_interval, start_date, default_args):
     dag = DAG(
@@ -72,12 +73,12 @@ def dynamic_create_dag(dag_id:str, institute, collections, generic_mapper, sched
     for collection, params in collections.items():
         task = PythonOperator(
             task_id=f'run_intake_{collection}',
-            python_callable=save_collection_closure (institute,collection, params, generic_mapper),
+            python_callable=save_collection (institute,collection, params, generic_mapper),
             dag=dag,
         )
         elt_task.append(task)
 
-    #chain(drop_task, elt_task)
-    chain(elt_task)
+    chain(drop_task, elt_task)
+    
     
     return dag
