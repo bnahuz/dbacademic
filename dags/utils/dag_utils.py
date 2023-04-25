@@ -44,12 +44,18 @@ def extract (instituicao, colecao, conf):
     consumer = getattr(consumers, conf['consumer']) (**params)
     return consumer.request().to_dict('records')
 
+def transform (data, gen_mapper):
+    #print (gen_mapper)
+    mapper = mapper_generate (data[0], gen_mapper)   
+    #print (mapper)   
+    return mapper_all(mapper, data)
+
+
 def dynamic_elt(instituicao, colecao, conf, mapeamento):
 
     def f():
            data = extract (instituicao, colecao, conf)
-           mapper = mapper_generate (data[0], mapeamento[colecao])      
-           data = mapper_all(mapper, data)
+           data = transform(data, mapeamento[colecao])
            insert_many(get_mongo_db(instituicao),colecao,data)
            return f"Inserted {colecao} in {instituicao} {data[0:100]}"
         
