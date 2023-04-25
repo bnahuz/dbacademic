@@ -7,7 +7,7 @@ from airflow.operators.python import PythonOperator
 from utils.mongo import drop_collection
 from airflow.models.baseoperator import chain
 
-import consumers
+import utils.consumers as consumers
 
 import utils.models
 
