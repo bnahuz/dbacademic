@@ -19,12 +19,6 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-config_dags = {
-    ufrn(): ['docentes', 'discentes', 'courses'],
-    ufpi(): ['docentes', 'discentes', 'courses'],
-    ifms(): ['discentes', 'courses'],
-    ufca(): ['docentes',  'courses'],
-}
 
 
 # vai apra um arquivo
@@ -47,15 +41,15 @@ config_dags = {
 
         "ufrn": {
             "docentes": {
-                    "consumer": "ckan",
-                    "consumer_params"  : {"main_url": "https://dados.ufrn.br", "resource_id": "6a8e5461-e748-45c6-aac6-432188d88dde"}
+                    "consumer": "CkanConsumer",
+                    "params"  : {"main_url": "https://dados.ufrn.br", "resource_id": "6a8e5461-e748-45c6-aac6-432188d88dde"}
                 }
         },
 
         "ifms" : {
             "docentes": {
-                    "consumer": "ckan",
-                    "consumer_params"  : {"main_url": "http://dados.ifms.edu.br", "resource_id": "4ccd20e6-703d-4682-a300-26a0e3788a4f"}
+                    "consumer": "CkanConsumer",
+                    "params"  : {"main_url": "http://dados.ifms.edu.br", "resource_id": "4ccd20e6-703d-4682-a300-26a0e3788a4f"}
                 }
         }
     }
