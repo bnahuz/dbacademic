@@ -1,8 +1,8 @@
 import sys
 sys.path.append('/opt/airflow/')
-from plugins.consumers.CkanConsumer import CkanConsumer
-from plugins.utils.mongo import get_mongo_db, insert_many
-from plugins.utils.mappers import *
+from consumers.CkanConsumer import CkanConsumer
+from utils.mongo import get_mongo_db, insert_many
+from utils.mappers import *
 
 class ufrn:
     def __init__(self):

@@ -1,9 +1,9 @@
 import sys
 import pandas as pd
 sys.path.append('/opt/airflow/')
-from plugins.utils.mappers import *
-from plugins.consumers.CkanConsumer import CkanConsumer
-from plugins.utils.mongo import get_mongo_db, insert_many, drop_collection
+from utils.mappers import *
+from consumers.CkanConsumer import CkanConsumer
+from utils.mongo import get_mongo_db, insert_many, drop_collection
 
 class ifms:
     def __init__(self):

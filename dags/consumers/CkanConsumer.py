@@ -3,14 +3,18 @@ import pandas as pd
 from time import sleep
 class CkanConsumer:
     def __init__(self, main_url:str, secure:bool = True):
+        '''
         if secure:
             self.url = f'https://{main_url}/api/action/datastore_search'
         else:
             self.url = f'http://{main_url}/api/action/datastore_search'
+        '''
+        self.url = f'{main_url}/api/action/datastore_search'
+        print ("ckan", self.url)
 
     def request(self, resource_id) -> pd.DataFrame:
         params = {
-            'limit': 1000,
+            'limit': 10,  #1000,
             'offset': 0,
             'resource_id': resource_id
         }
@@ -18,7 +22,8 @@ class CkanConsumer:
 
         print(f'[INFO] - Getting data from {self.url} on resource {resource_id} at offset {len(data)}')
         response = requests.get(self.url, params=params)
-        total = response.json()['result']['total']
+        #total = response.json()['result']['total']
+        total = 10
         data.extend(response.json()['result']['records'])
 
         while len(data) < total:

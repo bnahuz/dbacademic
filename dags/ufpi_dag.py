@@ -4,8 +4,8 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from plugins.institutes.ufpi import *
-from plugins.utils.dag_utils import dynamic_drop
+from institutes.ufpi import *
+from utils.dag_utils import dynamic_drop
 
 default_args = {
     'owner': 'airflow',
