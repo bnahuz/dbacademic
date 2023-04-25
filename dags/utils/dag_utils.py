@@ -9,7 +9,7 @@ from airflow.models.baseoperator import chain
 
 import consumers
 
-import rdf.models
+import utils.models
 
 #from consumers.CkanConsumer import CkanConsumer
 
@@ -81,7 +81,9 @@ def dynamic_ttl (instituicao, colecao, class_):
 
     return f
 
-def dynamic_create_dag(dag_id:str, institute, collections, generic_mapper, schedule_interval, start_date, default_args):
+def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, schedule_interval, start_date, default_args):
+    institute = institute_data["id"]
+    dbpedia_url = institute_data["dbpedia"]
     dag = DAG(
         f'{dag_id}_etl',
         default_args=default_args,
@@ -101,7 +103,7 @@ def dynamic_create_dag(dag_id:str, institute, collections, generic_mapper, sched
     for collection, params in collections.items():
         task = PythonOperator(
             task_id=f'run_intake_{collection}',
-            python_callable= dynamic_elt (institute,collection, params, generic_mapper),
+            python_callable= dynamic_elt (institute,collection, params, generic_mapper, dbpedia_url),
             dag=dag,
         )
         elt_task.append(task)

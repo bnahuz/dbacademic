@@ -1,76 +1,117 @@
+
+
 from rdflib import Namespace, Literal, URIRef
-from simpot import RdfsClass, BNamespace
+from simpot import RdfsClass, BNamespace, serialize_to_rdf, graph
 from rdflib.namespace import DC, FOAF
 
-VCARD = Namespace('https://www.w3.org/2006/vcard/ns#')
-DBO = Namespace('http://dbpedia.org/ontology/')
-DC = Namespace('http://purl.org/dc/terms/#')
-VIVO = Namespace("http://vivoweb.org/ontology/core#")
-BIBO = Namespace("http://purl.org/ontology/bibo/")
+
+CCSO = Namespace ("https://w3id.org/ccso/ccso#")
+SCHEMA = Namespace ("http://schema.org/legalName")
 OWL = Namespace("http://www.w3.org/TR/owl-ref/")
-OPENCIN = Namespace("http://purl.org/ontology/opencin/")
-DBACAD = Namespace("http://purl.org/ontology/dbacademic/")
 AIISO = Namespace("http://purl.org/vocab/aiiso/schema#")
 
-ORG = Namespace ("https://www.w3.org/TR/vocab-org/")
 
-OPENUAI = Namespace("http://purl.org/ontology/openuai#")
+formacao_dic = {
+    "MESTRADO": "https://w3id.org/ccso/ccso#Master",
+    "DOUTORADO":"https://w3id.org/ccso/ccso#Doctorate",
+    "ESPECIALIZAÇÃO": "https://w3id.org/ccso/ccso#Certificate",
+    "GRADUAÇÃO":"https://w3id.org/ccso/ccso#Bachelor",
+    "DESCONHECIDA": None,
+}
 
-class Discente ():
 
+class Docentes:
     nome = FOAF.name
-    curso = OPENCIN.isMemberOf
-    code= DC.identifier
+    matricula  = CCSO.personID
+    sexo = FOAF.gender
+    formacao = CCSO.hasDegree
+    lotacao = CCSO.memberOf
+    instituicao = CCSO.worksFor
+    
 
-    university = ORG.memberOf
-
-    @RdfsClass(OPENCIN.Student, "https://www.dbacademic.tech/resource/")
+    @RdfsClass(CCSO.Professor, "https://purl.org/dbacademic/resource#")
+    @BNamespace('ccso', CCSO)
     @BNamespace('foaf', FOAF)
-    @BNamespace('cin', OPENCIN)
-    @BNamespace('aiiso', AIISO)
-    @BNamespace('dc', DC)
-    @BNamespace('dbacad', DBACAD)
-    def __init__(self, dict ):
-        self.nome = Literal(dict["nome"])
+    def __init__ (self, dict):
         self.id = dict["id"]
-        self.code = dict["code"]
-        if "curso" in dict:
-            self.curso = URIRef(dict["curso"])
-        if "university" in dict:
-            self.university = URIRef(dict["university"])
+        self.nome = Literal (dict["nome"])
+        self.matricula = Literal(dict["matricula"])
+        if "sexo" in dict:
+            self.sexo = Literal(dict["sexo"])
+        if "formacao" in dict and dict["formacao"] != None:
+            self.formacao = URIRef(formacao_dic[dict["formacao"]])
+        if "lotacao" in dict and dict["lotacao"] != None:
+            self.lotacao = URIRef(dict["lotacao"])
+        if "instituicao" in dict and dict["instituicao"] != None:
+            self.instituicao = URIRef(dict["instituicao"])
 
 
-class Curso ():
+    def __repr__(self) -> str:
+        return str ((self.nome, self.matricula))
+
+class Discentes:
 
     nome = FOAF.name
+    data_ingresso = CCSO.enrollmentDate
+    matricula  = CCSO.personID
+    curso = CCSO.enrolledIn
+    sexo = FOAF.gender
+ 
 
-    area = OPENUAI.hasKnowledgeArea
+    @RdfsClass(CCSO.Student, "https://purl.org/dbacademic/resource#")
+    @BNamespace('ccso', CCSO)
+    @BNamespace('foaf', FOAF)
+    def __init__ (self, dict):
+        self.id = dict["id"]
+        self.nome = Literal (dict["nome"])
+        self.matricula = Literal(dict["matricula"])
+        if "sexo" in dict:
+            self.sexo = Literal(dict["sexo"])
+        if "curso" in dict and dict["curso"] != None:
+            self.curso = URIRef(dict["curso"])
+        if "data_ingresso" in dict:
+            self.data_ingresso = Literal (dict["data_ingresso"])
 
+
+class Cursos:
+
+    nome = CCSO.psName
+    codigo  = CCSO.code
+    unidade = CCSO.offeredBy
+    sameas = OWL.sameas
     coordenador = AIISO.responsibilityOf
 
-    unidade = AIISO.responsibilityOf
-
-    university = AIISO.part_of
-
-    code= AIISO.code
-
-    @RdfsClass(AIISO.Programme, "https://www.dbacademic.tech/resource/")
-    @BNamespace('cin', OPENCIN)
-    @BNamespace('uai', OPENUAI)
-    @BNamespace('aiiso', AIISO)
+    @RdfsClass(CCSO.ProgramofStudy, "https://purl.org/dbacademic/resource#")
+    @BNamespace('ccso', CCSO)
     @BNamespace('foaf', FOAF)
-    def __init__(self, dict):
-        self.nome = Literal(dict["nome"])
-        self.id = str(dict["id"])
-        self.code = str (dict["id"])
-
-        if "area" in dict:
-            self.area = Literal(dict["area"])
-        
-        if "coordenador" in dict:
-            self.coordenador = URIRef(dict["coordenador"])
-
-        if "unidade" in dict:
+    @BNamespace('owl', OWL)
+    def __init__ (self, dict):
+        self.id = dict["id"]
+        self.codigo = Literal (str(dict["codigo"]))
+        self.nome = Literal (dict["nome"])
+        if "unidade" in dict and dict["unidade"] != None:
             self.unidade = URIRef(dict["unidade"])
-            
-        self.university = URIRef(dict["university"])
+        
+        if "sameas" in dict:
+            self.sameas = URIRef(dict["sameas"])
+
+        if "coordenador" in dict:
+            self.sameas = URIRef(dict["coordenador"])
+
+    
+
+# englobar unidade, subunidade ...
+#EducationalOrganization
+class Unidades:
+    nome = SCHEMA.legalName
+    codigo = SCHEMA.identifier
+    instituicao = CCSO.belongsTo
+
+    @RdfsClass(CCSO.EducationalOrganization, "https://purl.org/dbacademic/resource#")
+    @BNamespace('schema', SCHEMA)
+    @BNamespace('ccso', CCSO)
+    def __init__ (self, dict):
+        self.id = dict["id"]
+        self.codigo = Literal (str(dict["codigo"]))
+        self.nome = Literal (dict["nome"])
+        self.instituicao = URIRef(dict["instituicao"])
