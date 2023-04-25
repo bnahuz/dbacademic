@@ -1,4 +1,4 @@
-import sys
+""" import sys
 sys.path.append('/opt/airflow/')
 from datetime import timedelta
 from airflow import DAG
@@ -53,4 +53,4 @@ run_intake_courses = PythonOperator(
 
 
 drop_collections >> \
-run_intake_docentes >> run_intake_discentes >> run_intake_courses
+run_intake_docentes >> run_intake_discentes >> run_intake_courses """

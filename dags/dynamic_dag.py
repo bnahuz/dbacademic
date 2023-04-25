@@ -19,11 +19,13 @@ default_args = {
 config_dags = {
     ufrn(): ['docentes', 'discentes', 'courses'],
     ufpi(): ['docentes', 'discentes', 'courses'],
+    ifms(): ['discentes', 'courses'],
+    ufca(): ['docentes',  'courses'],
 }
 
 for institute, collections in config_dags.items():
     dag = dynamic_create_dag(
-        dag_id = f'{institute.name}_test', 
+        dag_id = f'{institute.name}', 
         institute = institute, 
         collections = collections, 
         schedule_interval = '@once', 

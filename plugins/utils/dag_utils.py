@@ -2,7 +2,10 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from plugins.institutes.ufpi import ufpi
 from plugins.institutes.ufrn import ufrn
-from plugins.utils.mongo import drop_collection, get_mongo_db
+from plugins.institutes.ifms import ifms
+from plugins.institutes.ufca import ufca
+from plugins.utils.mongo import drop_collection
+from airflow.models.baseoperator import chain
 
 def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
     return PythonOperator(
@@ -12,7 +15,8 @@ def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
         dag=dag,
     )
 
-def dynamic_create_dag(dag_id:str, institute:object, collections:list, schedule_interval, start_date, default_args):
+
+def dynamic_create_dag(dag_id:str, institute, collections:list, schedule_interval, start_date, default_args):
     dag = DAG(
         f'{dag_id}_etl',
         default_args=default_args,
@@ -21,13 +25,11 @@ def dynamic_create_dag(dag_id:str, institute:object, collections:list, schedule_
         start_date=start_date
     )
 
-    #Gerador de drop de collections
     drop_task = []
     for collection in collections:
         task = dynamic_drop(f'drop_{collection}', str(institute.name), collection, dag)
         drop_task.append(task)
 
-    #Gerador de ingestão de collections
     elt_task = []
     for collection in collections:
         task = PythonOperator(
@@ -36,7 +38,7 @@ def dynamic_create_dag(dag_id:str, institute:object, collections:list, schedule_
             dag=dag,
         )
         elt_task.append(task)
-    
-    drop_task >> elt_task[0] >> elt_task[1] >> elt_task[2] #Necessário melhorar essa parte
+
+    chain(drop_task, elt_task)
     
     return dag
