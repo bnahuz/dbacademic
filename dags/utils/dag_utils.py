@@ -23,8 +23,8 @@ from utils.mongo import get_mongo_db, insert_many, drop_collection
 def mapper_generate (obj, mapeamento):
     new_map = {}
     for collumn, list_collumn in mapeamento.items():
-        for current in obj.keys():
-            if current in list_collumn:
+        for current in list_collumn:
+            if current in obj.keys():
                 new_map[collumn] = current
                 break
     return new_map

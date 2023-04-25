@@ -15,12 +15,12 @@ config_dags = {
     "mapeamento" : {
 
         "docentes" : {
-            "nome": ["nome","servidor","Nome do Servidor","Nome","NOME_FUNCIONARIO", "nome_servidor","NomeServidor"],
+            "nome": ["nome","servidor","SERVIDOR","Nome do Servidor","Nome","NOME_FUNCIONARIO", "nome_servidor","NomeServidor"],
             "id": ["siape","matricula","Matrícula","Matricula","_id","vinculo_servidor","CodigoServidor"],
             "matricula": ["siape","matricula","vinculo_servidor","CodigoServidor"],
-            "sexo": ["sexo"],
-            "formacao": ["formacao","escolaridade","TitulacaoServidor"],
-            "lotacao" :["Órgão de Lotação (SIAPE)"]
+            "sexo": ["sexo","Sexo"],
+            "formacao": ["formacao","escolaridade","TitulacaoServidor","Escolaridade","TITULAÇÃO"],
+            "lotacao" :["Órgão de Lotação (SIAPE)", "setor lotacao","UNIDADE EM EXERCÍCIO"]
         }
 
     },
@@ -105,7 +105,7 @@ config_dags = {
                 }
         },
 
-  '''
+  
 
         "ufms" : {
             "docentes": {
@@ -114,6 +114,36 @@ config_dags = {
                     "params": {"resource_id": "a8ca7f30-0824-489b-8c70-faddcbd74f53", "q": "Professor do Magisterio Superior"}
                 }
         },
+
+
+        
+
+        "ufop" : {
+            "docentes": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "http://dados.ufop.br",
+                    "params": {"resource_id": "04e65338-1b7f-45b7-893b-05470d17dcad"}
+                }
+        },
+
+
+        "ifgoiano" : {
+            "docentes": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "https://dados.ifgoiano.edu.br",
+                    "params": {"resource_id": "ecd0ad77-2125-42c4-a8d0-c3fe012731dd"}
+                }
+        },
+        '''
+        "ifsuldeminas" : {
+            "docentes": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "https://dados.ifsuldeminas.edu.br",
+                    "params": {"resource_id": "7db2014f-577f-4ec3-a6ab-2c7da2015f8b","q":"PROFESSOR"}
+                }
+        },
+
+
 
     }
 
