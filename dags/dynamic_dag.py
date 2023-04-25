@@ -46,6 +46,20 @@ config_dags = {
                 }
         },
 
+        "ufca": {
+            "docentes": {
+                    "consumer": "CkanConsumer",
+                    "params"  : {"main_url": "https://dados.ufca.edu.br", "resource_id": "6b2dbca5-58f8-472e-bc6a-eb827e631873"}
+                }
+        },
+
+        "ufpi": {
+            "docentes": {
+                    "consumer": "CkanConsumer",
+                    "params"  : {"main_url": "dados.ufpi.br", "resource_id": "a34d7d7e-30af-41f0-81cf-cd10b6f078bd"}
+                }
+        },
+
         "ifms" : {
             "docentes": {
                     "consumer": "CkanConsumer",
