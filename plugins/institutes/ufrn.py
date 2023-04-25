@@ -1,5 +1,4 @@
 import sys
-import pandas as pd
 sys.path.append('/opt/airflow/')
 from plugins.consumers.CkanConsumer import CkanConsumer
 from plugins.utils.mongo import get_mongo_db, insert_many
@@ -11,7 +10,6 @@ class ufrn:
         self.name = 'UFRN'
 
     #Docente
-    @staticmethod
     def etl_docentes(self):
         docentes_ufrn = self.ufrn_consumer.request('6a8e5461-e748-45c6-aac6-432188d88dde')
         docentes_ufrn = trunc_date(docentes_ufrn,'admissao','ano_periodo')
@@ -20,7 +18,6 @@ class ufrn:
         return 'Inserted docentes'
 
     #Curso
-    @staticmethod
     def etl_courses(self):
         cursos_ufrn = self.ufrn_consumer.request('a10bc434-9a2d-491a-ae8c-41cf643c35bc')
         cursos_ufrn = mapper_cursos(cursos_ufrn,'UFRN','a10bc434-9a2d-491a-ae8c-41cf643c35bc','nome','id_curso')
@@ -28,7 +25,6 @@ class ufrn:
         return "Inserted courses"
 
     #Discente
-    @staticmethod
     def etl_discentes(self):
         discentes_ufrn = self.ufrn_consumer.request('14afbb6c-395e-411c-b24d-0e494cb95866')
         discentes_ufrn = mapper_discentes(discentes_ufrn,'UFRN','14afbb6c-395e-411c-b24d-0e494cb95866','nome_discente','matricula','sexo','ano_ingresso','periodo_ingresso','nome_curso')

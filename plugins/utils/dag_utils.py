@@ -12,21 +12,22 @@ def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
         dag=dag,
     )
 
-def dynamic_create_dag(dag_id:str, institute, collections:list, schedule_interval, start_date, default_args):
+def dynamic_create_dag(dag_id:str, institute:object, collections:list, schedule_interval, start_date, default_args):
     dag = DAG(
         f'{dag_id}_etl',
         default_args=default_args,
-        description=f'A simple DAG to extract data from {institute.__name__.upper} API',
+        description=f'A simple DAG to extract data from {institute.name} API',
         schedule_interval=schedule_interval,
         start_date=start_date
     )
 
+    #Gerador de drop de collections
     drop_task = []
     for collection in collections:
-        task = dynamic_drop(f'drop_{collection}', str(institute.__name__), collection, dag)
+        task = dynamic_drop(f'drop_{collection}', str(institute.name), collection, dag)
         drop_task.append(task)
 
-    # Run each intake function and save data in MongoDB
+    #Gerador de ingestão de collections
     elt_task = []
     for collection in collections:
         task = PythonOperator(

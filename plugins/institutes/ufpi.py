@@ -1,5 +1,4 @@
 import sys
-import pandas as pd
 sys.path.append('/opt/airflow/')
 from plugins.consumers.CkanConsumer import CkanConsumer
 from plugins.utils.mongo import get_mongo_db, insert_many, drop_collection
@@ -10,6 +9,7 @@ class ufpi:
     def __init__(self):
         #Dados desatualizados desde 2018
         self.ufpi_consumer = CkanConsumer('dados.ufpi.br', secure=True)
+        self.name = 'UFPI'
         
     #Curso
     def etl_courses(self):
