@@ -29,6 +29,8 @@ def mapper_generate (obj, mapeamento):
                 break
     return new_map
 
+def append_key_value (data, key, value):
+    return list(map(lambda x: {**x, key: value}, data))
 
 def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
     return PythonOperator(
@@ -44,20 +46,22 @@ def extract (instituicao, colecao, conf):
     consumer = getattr(consumers, conf['consumer']) (conf['main_url'],**params)
     return consumer.request().to_dict('records')
 
-def transform (data, gen_mapper):
+def transform (data, gen_mapper, dbpedia_url):
     #print (gen_mapper)
     mapper = mapper_generate (data[0], gen_mapper)   
     #print (mapper)   
-    return mapper_all(mapper, data)
+    data = mapper_all(mapper, data)
+    return append_key_value (data, "instituicao", dbpedia_url)
+    
 
 
-def dynamic_elt(instituicao, colecao, conf, mapeamento):
+def dynamic_elt(institute, collection, conf, generic_mapper, dbpedia_url):
 
     def f():
-           data = extract (instituicao, colecao, conf)
-           data = transform(data, mapeamento[colecao])
-           insert_many(get_mongo_db(instituicao),colecao,data)
-           return f"Inserted {colecao} in {instituicao} {data[0:100]}"
+           data = extract (institute, collection, conf)
+           data = transform(data, generic_mapper[collection], dbpedia_url)
+           insert_many(get_mongo_db(institute),collection,data)
+           return f"Inserted {collection} in {institute} {data[0:100]}"
         
     return f
 

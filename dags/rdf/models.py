@@ -43,8 +43,8 @@ class Docentes:
             self.formacao = URIRef(formacao_dic[dict["formacao"]])
         if "lotacao" in dict and dict["lotacao"] != None:
             self.lotacao = URIRef(dict["lotacao"])
-       # if "instituicao" in dict and dict["instituicao"] != None:
-       #     self.instituicao = URIRef(config.instituicoes_urls[dict["instituicao"].upper()])
+        if "instituicao" in dict and dict["instituicao"] != None:
+            self.instituicao = URIRef(config.instituicoes_urls[dict["instituicao"].upper()])
 
 
     def __repr__(self) -> str:
