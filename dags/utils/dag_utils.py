@@ -41,7 +41,7 @@ def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
 def extract (instituicao, colecao, conf):
     params = conf['params']
     print (conf['consumer'])
-    consumer = getattr(consumers, conf['consumer']) (**params)
+    consumer = getattr(consumers, conf['consumer']) (conf['main_url'],**params)
     return consumer.request().to_dict('records')
 
 def transform (data, gen_mapper):
