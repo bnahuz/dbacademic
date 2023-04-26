@@ -7,7 +7,9 @@ from utils.mongo import get_mongo_db, insert_many, drop_collection
 import utils.consumers as consumers
 import utils.models
 
+import os
 
+from airflow.models import Variable
 
 
 # a partir de um dado, e de um mapper generico, retorna um mapper específico
@@ -23,10 +25,16 @@ def mapper_generate (obj, mapeamento):
 def append_key_value (data, key, value):
     return list(map(lambda x: {**x, key: value}, data))
 
+def save_content_to_file(file, content):
+    print(f'[INFO] - Saving file {file}')
+    with open(file, 'w') as f:
+        f.write(content)
+
+
 def extract (instituicao, colecao, conf):
     params = conf['params']
-    print (conf['consumer'])
-    consumer = getattr(consumers, conf['consumer']) (conf['main_url'],**params)
+    extract_total = int (Variable.get("extract_total", default_var=100000000))
+    consumer = getattr(consumers, conf['consumer']) (conf['main_url'],extract_total, **params)
     return consumer.request().to_dict('records')
 
 def transform (data, gen_mapper, dbpedia_url):
@@ -46,6 +54,10 @@ def dynamic_ttl (institute, collection, model_class):
     mongo_collection = db[collection]
     documents = list(mongo_collection.find())
     content = serialize_to_rdf(documents, model_class)
+    local_save = int(Variable.get("local_save", default_var=0))
+    if local_save:
+        filename = f"/opt/airflow/download/{institute}_{collection}.ttl"
+        save_content_to_file(filename, content)
     return {"ok": content[0:200] }
 
 

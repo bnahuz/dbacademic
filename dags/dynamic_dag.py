@@ -21,7 +21,6 @@ default_args = {
 
 
 
-# vai para um arquivo, ou mongodb
 config_dags = {
 
     "mapeamento" : {
@@ -32,24 +31,39 @@ config_dags = {
             "matricula": ["siape","matricula","vinculo_servidor","CodigoServidor"],
             "sexo": ["sexo","Sexo"],
             "formacao": ["formacao","escolaridade","TitulacaoServidor","Escolaridade","TITULAÇÃO"],
-            "lotacao" :["Órgão de Lotação (SIAPE)", "setor lotacao"]
-        },
+            "nome_lotacao" :["Órgão de Lotação (SIAPE)", "setor lotacao"],
+            "codigo_lotacao" :["id_unidade_lotacao"],
+        }
+        ,
 
         "discentes" : {
-            "nome": ["nome"], 
-            "id" : ["ra"],
-            "matricula" : ["ra"],
+            "nome": ["nome","nome_discente"], 
+            "id" : ["ra", "matricula"],
+            "matricula" : ["ra", "matricula"],
+            "sexo" : ["sexo"],
             "data_ingresso" : ["data_inicio"],
-            "curso": ["curso"]
-        }
+            "codigo_curso" : ["id_curso"],
+            "nome_curso": ["curso"]
+        },
+
+        "cursos" : {
+            "nome": ["nome"], 
+            "id" : ["id_curso"],
+            "codigo" : ["id_curso"],
+            "codigo_unidade" : ["id_unidade_responsavel"],
+        },
+
+        "unidades" : {
+            "nome": ["nome_unidade"], 
+            "id" : ["id_unidade"],
+            "codigo" : ["id_unidade"],
+        },
+
 
     },
 
 
     "instituicoes" : {
-
-
-        
 
         "ufrn": {
             "dbpedia_pt":"http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
@@ -58,7 +72,26 @@ config_dags = {
                     "consumer": "CkanConsumer",
                     "main_url": "https://dados.ufrn.br",
                     "params": {"resource_id": "6a8e5461-e748-45c6-aac6-432188d88dde"}
-                }
+                },
+
+            "discentes": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "https://dados.ufrn.br",
+                    "params": {"resource_id": "a55aef81-e094-4267-8643-f283524e3dd7"}
+                },
+
+            "cursos": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "https://dados.ufrn.br",
+                    "params": {"resource_id": "a10bc434-9a2d-491a-ae8c-41cf643c35bc"}
+                },
+ 
+           "unidades": {
+                    "consumer": "CkanConsumer",
+                    "main_url": "https://dados.ufrn.br",
+                    "params": {"resource_id": "3f2e4e32-ef1a-4396-8037-cbc22a89d97f"}
+                },
+
         }},
 
         "ufca": {

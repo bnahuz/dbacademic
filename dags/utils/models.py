@@ -4,6 +4,17 @@ from rdflib import Namespace, Literal, URIRef
 from simpot import RdfsClass, BNamespace, serialize_to_rdf, graph
 from rdflib.namespace import DC, FOAF
 
+from hashlib import md5
+
+def hashcode(institute, collection,  code):
+    return md5(f"{institute}{collection}{code}".encode()).hexdigest()
+
+#constants
+UNIDADES = "UNIDADES"
+DOCENTES = "DOCENTES"
+CURSOS = "CURSOS"
+DISCENTES = "DISCENTES"
+
 
 CCSO = Namespace ("https://w3id.org/ccso/ccso#")
 SCHEMA = Namespace ("http://schema.org/legalName")
@@ -25,7 +36,7 @@ class Docentes:
     matricula  = CCSO.personID
     sexo = FOAF.gender
     formacao = CCSO.hasDegree
-    lotacao = CCSO.memberOf
+    codigo_lotacao = CCSO.memberOf
     instituicao = CCSO.worksFor
     
 
@@ -33,15 +44,16 @@ class Docentes:
     @BNamespace('ccso', CCSO)
     @BNamespace('foaf', FOAF)
     def __init__ (self, dict):
-        self.id = dict["id"]
+        self.id = hashcode ( dict["instituicao"], DOCENTES, dict["id"])
         self.nome = Literal (dict["nome"])
         self.matricula = Literal(dict["matricula"])
         if "sexo" in dict:
             self.sexo = Literal(dict["sexo"])
-        if "formacao" in dict and dict["formacao"] != None:
+        if "formacao" in dict and dict["formacao"] != None and dict["formacao"] in formacao_dic:
             self.formacao = URIRef(formacao_dic[dict["formacao"]])
-        if "lotacao" in dict and dict["lotacao"] != None:
-            self.lotacao = URIRef(dict["lotacao"])
+        if "codigo_lotacao" in dict and dict["codigo_lotacao"] != None:
+            hash_code = hashcode ( dict["instituicao"], UNIDADES , dict["codigo_lotacao"])
+            self.codigo_lotacao = URIRef( f"https://purl.org/dbacademic/resource#{hash_code}" )
         if "instituicao" in dict and dict["instituicao"] != None:
             self.instituicao = URIRef(dict["instituicao"])
 
@@ -54,7 +66,7 @@ class Discentes:
     nome = FOAF.name
     data_ingresso = CCSO.enrollmentDate
     matricula  = CCSO.personID
-    curso = CCSO.enrolledIn
+    codigo_curso = CCSO.enrolledIn
     sexo = FOAF.gender
  
 
@@ -62,13 +74,14 @@ class Discentes:
     @BNamespace('ccso', CCSO)
     @BNamespace('foaf', FOAF)
     def __init__ (self, dict):
-        self.id = dict["id"]
+        self.id = hashcode ( dict["instituicao"], DISCENTES, dict["id"])
         self.nome = Literal (dict["nome"])
         self.matricula = Literal(dict["matricula"])
         if "sexo" in dict:
             self.sexo = Literal(dict["sexo"])
-        if "curso" in dict and dict["curso"] != None:
-            self.curso = Literal(dict["curso"]) # URIRef(dict["curso"]) # depois transformar em URI
+        if "codigo_curso" in dict and dict["codigo_curso"] != None:
+            hash_code = hashcode ( dict["instituicao"], CURSOS , dict["codigo_curso"])
+            self.codigo_curso = URIRef( f"https://purl.org/dbacademic/resource#{hash_code}" )
         if "data_ingresso" in dict:
             self.data_ingresso = Literal (dict["data_ingresso"])
 
@@ -77,26 +90,27 @@ class Cursos:
 
     nome = CCSO.psName
     codigo  = CCSO.code
-    unidade = CCSO.offeredBy
+    codigo_unidade = CCSO.offeredBy
     sameas = OWL.sameas
-    coordenador = AIISO.responsibilityOf
+    codigo_coordenador = AIISO.responsibilityOf
 
     @RdfsClass(CCSO.ProgramofStudy, "https://purl.org/dbacademic/resource#")
     @BNamespace('ccso', CCSO)
     @BNamespace('foaf', FOAF)
     @BNamespace('owl', OWL)
     def __init__ (self, dict):
-        self.id = dict["id"]
+        self.id =  hashcode ( dict["instituicao"], CURSOS, dict["id"])
         self.codigo = Literal (str(dict["codigo"]))
         self.nome = Literal (dict["nome"])
-        if "unidade" in dict and dict["unidade"] != None:
-            self.unidade = URIRef(dict["unidade"])
+        if "codigo_unidade" in dict and dict["codigo_unidade"] != None:
+            hash_code = hashcode ( dict["instituicao"], UNIDADES , dict["codigo_unidade"])
+            self.codigo_unidade = URIRef( f"https://purl.org/dbacademic/resource#{hash_code}" )
         
         if "sameas" in dict:
             self.sameas = URIRef(dict["sameas"])
 
-        if "coordenador" in dict:
-            self.sameas = URIRef(dict["coordenador"])
+        #if "coordenador" in dict:
+        #    self.codigo_coordenador = URIRef(dict["coordenador"])
 
     
 
