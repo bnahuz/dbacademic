@@ -1,26 +1,17 @@
 import sys
-sys.path.append('/opt/airflow/')
 from datetime import timedelta
-from airflow.utils.dates import days_ago
-from utils.dag_utils import *
 
+from utils.dag_utils import extract, transform,dynamic_ttl
+
+from simpot.serialize import mapper_all,  serialize_to_rdf
 
 import json
 
-default_args = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'email': ['breno.nahuz@discente.ufma.br'],
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'schedule_interval' : '@once',
-    'start_date': days_ago(0),
-    'retry_delay': timedelta(minutes=5),
-}
+import utils
 
 
 
+# vai apra um arquivo
 config_dags = {
 
     "mapeamento" : {
@@ -64,6 +55,9 @@ config_dags = {
 
 
     "instituicoes" : {
+
+
+        
 
         "ufrn": {
             "dbpedia_pt":"http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
@@ -225,15 +219,20 @@ config_dags = {
 
 }
 
+instituicoes = config_dags["instituicoes"].items()
 
-for institute, values in config_dags["instituicoes"].items():
+instituicoes = {k: v for k, v in instituicoes if k == "ufrn"}
+
+for institute, values in instituicoes.items():
     collections = values["colecoes"]
-    dag = dynamic_create_dag(
-        dag_id = f'{institute}', 
-        institute_data = {"id": institute, "dbpedia": values["dbpedia_pt"]},  
-        collections = collections, 
-        generic_mapper = config_dags["mapeamento"],
-        schedule_interval = '@once', 
-        start_date = days_ago(0), 
-        default_args = default_args)
-    globals()[dag.dag_id] = dag
+    for collection, params in collections.items():
+        print (institute,collection,params)
+        data = extract(institute,collection,params)[1:5]
+        print (data)
+        generic_mapper = config_dags["mapeamento"][collection]
+        dbpedia_url = values["dbpedia_pt"]
+        data = transform (data, generic_mapper, dbpedia_url)
+        print (data)
+        class_ = getattr(utils.models, collection.capitalize()) 
+        ttl = serialize_to_rdf(data, class_)
+        print (ttl)
