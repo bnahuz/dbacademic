@@ -1,22 +1,13 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-#from institutes.ufpi import ufpi
-#from institutes.ufrn import ufrn
-#from institutes.ifms import ifms
-#from institutes.ufca import ufca
-from utils.mongo import drop_collection
 from airflow.models.baseoperator import chain
-
-import utils.consumers as consumers
-
-import utils.models
-
-#from consumers.CkanConsumer import CkanConsumer
-
-
 from simpot.serialize import mapper_all,  serialize_to_rdf, serialize_to_rdf_file
 
 from utils.mongo import get_mongo_db, insert_many, drop_collection
+import utils.consumers as consumers
+import utils.models
+
+
 
 
 # a partir de um dado, e de um mapper generico, retorna um mapper específico
@@ -32,14 +23,6 @@ def mapper_generate (obj, mapeamento):
 def append_key_value (data, key, value):
     return list(map(lambda x: {**x, key: value}, data))
 
-def dynamic_drop(task_id:str, insitute:str, collection:str, dag:DAG):
-    return PythonOperator(
-        task_id=task_id,
-        python_callable=drop_collection,
-        op_kwargs={'institute': insitute, 'collection_name': collection},
-        dag=dag,
-    )
-
 def extract (instituicao, colecao, conf):
     params = conf['params']
     print (conf['consumer'])
@@ -47,39 +30,28 @@ def extract (instituicao, colecao, conf):
     return consumer.request().to_dict('records')
 
 def transform (data, gen_mapper, dbpedia_url):
-    #print (gen_mapper)
     mapper = mapper_generate (data[0], gen_mapper)   
-    #print (mapper)   
     data = mapper_all(mapper, data)
     return append_key_value (data, "instituicao", dbpedia_url)
-    
-
 
 def dynamic_elt(institute, collection, conf, generic_mapper, dbpedia_url):
+    data = extract (institute, collection, conf)
+    data = transform(data, generic_mapper[collection], dbpedia_url)
+    insert_many(get_mongo_db(institute),collection,data)
+    return f"Inserted {collection} in {institute} {data[0:100]}"
+ 
 
-    def f():
-           data = extract (institute, collection, conf)
-           data = transform(data, generic_mapper[collection], dbpedia_url)
-           insert_many(get_mongo_db(institute),collection,data)
-           return f"Inserted {collection} in {institute} {data[0:100]}"
-        
-    return f
-
-
-def dynamic_ttl (instituicao, colecao, class_):
-
-    def f():
-        db = get_mongo_db(instituicao)
-        mongo_collection = db[colecao]
-        documents = list(mongo_collection.find())
-        # depois ira salvar no google drive
-        content = serialize_to_rdf(documents, class_)
-        #filename = f"/opt/airflow/download/{instituicao}_{colecao}.ttl"
-        #save_content_to_file(filename, content)
-        return {"ok": content[0:200] }
+def dynamic_ttl (institute, collection, model_class):
+    db = get_mongo_db(institute)
+    mongo_collection = db[collection]
+    documents = list(mongo_collection.find())
+    content = serialize_to_rdf(documents, model_class)
+    return {"ok": content[0:200] }
 
 
-    return f
+#####################################################
+###
+####################################################
 
 def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, schedule_interval, start_date, default_args):
     institute = institute_data["id"]
@@ -95,7 +67,12 @@ def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, 
 
     drop_task = []
     for collection, paramns in collections.items():
-        task = dynamic_drop(f'drop_{collection}', str(institute), collection, dag)
+        task = PythonOperator(
+            task_id=f'drop_{collection}',
+            python_callable=drop_collection,
+            op_kwargs={'institute': institute, 'collection_name': collection},
+            dag=dag,
+        )
         drop_task.append(task)
     
     
@@ -103,20 +80,22 @@ def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, 
     for collection, params in collections.items():
         task = PythonOperator(
             task_id=f'run_intake_{collection}',
-            python_callable= dynamic_elt (institute,collection, params, generic_mapper, dbpedia_url),
+            python_callable= dynamic_elt,
+            op_kwargs={'institute':institute,'collection':collection, 'conf':params, "generic_mapper":generic_mapper, "dbpedia_url":dbpedia_url},
             dag=dag,
         )
         elt_task.append(task)
 
 
     ttl_task = []
+
    
     for collection, params in collections.items():
         class_ = getattr(utils.models, collection.capitalize()) 
         oper = PythonOperator(
             task_id=f'transform_{collection}',
-            # com lambda parece que ele mantem a referencia aos dados
-            python_callable= dynamic_ttl (institute,collection, class_),
+            python_callable= dynamic_ttl,
+            op_kwargs={"institute":institute, "collection":collection, "model_class":class_},
             dag=dag,
         )
         ttl_task.append(oper)
