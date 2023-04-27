@@ -31,19 +31,16 @@ def save_content_to_file(file, content):
         f.write(content)
 
 
-def extract (instituicao, colecao, conf):
-    params = conf['params']
-    extract_total = int (Variable.get("extract_total", default_var=100000000))
-    consumer = getattr(consumers, conf['consumer']) (conf['main_url'],extract_total, **params)
-    return consumer.request().to_dict('records')
+def extract (consumer, params):
+    return consumer.request(**params).to_dict('records')
 
 def transform (data, gen_mapper, dbpedia_url):
     mapper = mapper_generate (data[0], gen_mapper)   
     data = mapper_all(mapper, data)
     return append_key_value (data, "instituicao", dbpedia_url)
 
-def dynamic_elt(institute, collection, conf, generic_mapper, dbpedia_url):
-    data = extract (institute, collection, conf)
+def dynamic_elt(institute, collection, consumer, params, generic_mapper, dbpedia_url):
+    data = extract (consumer, params)
     data = transform(data, generic_mapper[collection], dbpedia_url)
     insert_many(get_mongo_db(institute),collection,data)
     return f"Inserted {collection} in {institute} {data[0:100]}"
@@ -65,9 +62,14 @@ def dynamic_ttl (institute, collection, model_class):
 ###
 ####################################################
 
-def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, schedule_interval, start_date, default_args):
-    institute = institute_data["id"]
-    dbpedia_url = institute_data["dbpedia"]
+def dynamic_create_dag(dag_id:str, institute, conf, generic_mapper, schedule_interval, start_date, default_args):
+    collections = conf["colecoes"]
+    main_url = conf["main_url"]
+    dbpedia_url = conf["dbpedia_pt"]
+    extract_total = int (Variable.get("extract_total", default_var=10))
+    consumer = getattr(consumers, conf['consumer']) (main_url, extract_total)
+    
+
     dag = DAG(
         f'{dag_id}_etl',
         default_args=default_args,
@@ -93,7 +95,7 @@ def dynamic_create_dag(dag_id:str, institute_data, collections, generic_mapper, 
         task = PythonOperator(
             task_id=f'run_intake_{collection}',
             python_callable= dynamic_elt,
-            op_kwargs={'institute':institute,'collection':collection, 'conf':params, "generic_mapper":generic_mapper, "dbpedia_url":dbpedia_url},
+            op_kwargs={'institute':institute,'collection':collection, 'consumer': consumer, 'params':params, "generic_mapper":generic_mapper, "dbpedia_url":dbpedia_url},
             dag=dag,
         )
         elt_task.append(task)

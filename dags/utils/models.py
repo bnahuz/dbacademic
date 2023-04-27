@@ -38,6 +38,7 @@ class Docentes:
     formacao = CCSO.hasDegree
     codigo_lotacao = CCSO.memberOf
     instituicao = CCSO.worksFor
+    email = FOAF.mbox
     
 
     @RdfsClass(CCSO.Professor, "https://purl.org/dbacademic/resource#")
@@ -56,6 +57,9 @@ class Docentes:
             self.codigo_lotacao = URIRef( f"https://purl.org/dbacademic/resource#{hash_code}" )
         if "instituicao" in dict and dict["instituicao"] != None:
             self.instituicao = URIRef(dict["instituicao"])
+        
+        if "email" in dict and dict["email"] != None:
+            self.email = URIRef(dict["email"])
 
 
     def __repr__(self) -> str:
