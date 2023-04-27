@@ -21,20 +21,25 @@ default_args = {
 
 
 
+
 config_dags = {
     "mapeamento": {
         "docentes": {
             "nome": [
+                "NOME",
                 "nome",
                 "servidor",
+                "NOME SERVIDOR",
                 "SERVIDOR",
                 "Nome do Servidor",
                 "Nome",
                 "NOME_FUNCIONARIO",
                 "nome_servidor",
                 "NomeServidor",
+                "nome_oficial"
             ],
-            "id": [
+            "id": ["SIAPE",
+                "Siape",
                 "siape",
                 "matricula",
                 "Matrícula",
@@ -43,7 +48,7 @@ config_dags = {
                 "vinculo_servidor",
                 "CodigoServidor",
             ],
-            "matricula": ["siape", "matricula", "vinculo_servidor", "CodigoServidor", "_id"],
+            "matricula": ["SIAPE","Siape","MATRICULA","siape", "matricula", "vinculo_servidor", "CodigoServidor", "_id"],
             "sexo": ["sexo", "Sexo"],
             "formacao": [
                 "formacao",
@@ -51,9 +56,13 @@ config_dags = {
                 "TitulacaoServidor",
                 "Escolaridade",
                 "TITULAÇÃO",
+                "NIVEL ESCOLARIDADE",
+                "Titulacao",
+                "TITULAÇÃO"
             ],
             "nome_lotacao": ["Órgão de Lotação (SIAPE)", "setor lotacao"],
-            "codigo_lotacao": ["id_unidade_lotacao"],
+            "codigo_lotacao": ["id_unidade_lotacao", "CÓDIGO DA UNIDADE ORGANIZACIONAL","setor_siape"],
+            "email" : ["email"]
         },
         "discentes": {
             "nome": ["nome", "nome_discente"],
@@ -167,6 +176,115 @@ config_dags = {
             "colecoes": {
                 "docentes": {"resource_id": "4ccd20e6-703d-4682-a300-26a0e3788a4f"},
                 "discentes": {"resource_id": "b8b4dfdf-98ef-4d57-baff-75c163be6e9a"},
+            },
+        },
+
+
+        "ufma": {
+            "consumer": "CkanConsumer",
+            "main_url": "https://dadosabertos.ufma.br/",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_do_Maranhão",
+            "colecoes": {
+                "docentes": {"resource_id": "55a2d103-d73b-449e-85bc-655df7dfc45a"},
+            },
+        },
+
+        "ifap": {
+            "consumer": "CkanConsumer",
+            "main_url": "http://dados.ifap.edu.br/",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Amapá",
+            "colecoes": {
+                "docentes": {"resource_id": "005896e4-2a0a-4ddb-8420-62258d231871"},
+            },
+        },
+
+        "univasf": { 
+            "consumer": "CkanConsumer",
+            "main_url": "http://dados.univasf.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_do_Vale_do_São_Francisco",
+            "colecoes": {
+                "docentes": {"resource_id": "de111b8a-9b29-460e-acd3-7fda0ac62e41"},
+            },
+        },
+
+        "ufvjm": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.ufvjm.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_dos_Vales_do_Jequitinhonha_e_Mucuri",
+            "colecoes": {
+                "docentes": {"resource_id": "0b9aa08a-e251-43d0-959a-e08de3d71e5a"},
+            },
+        },
+
+
+        "ufgd": { 
+            "consumer": "CkanConsumer",
+            "main_url": "http://dadosabertos.ufgd.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_da_Grande_Dourados",
+            "colecoes": {
+                "docentes": {"resource_id": "2249c447-7ae3-440a-afca-aa8ac8bb0596"},
+            },
+        },
+
+
+        "uffs": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.uffs.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_da_Fronteira_Sul",
+            "colecoes": {
+                "docentes": {"resource_id": "1e801321-6e0b-4716-ba1d-ce79919e87da","q":"Professor"},
+            },
+        },
+
+        "unifei": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.unifei.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_de_Itajubá",
+            "colecoes": {
+                "docentes": {"resource_id": "50024421-d377-4184-ac23-e7f0ee3ad2c1", "q": "Professor"},
+            },
+        },
+
+        "ufpel": { 
+            "consumer": "CkanConsumer",
+            "main_url": "http://dados.ufpel.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_de_Pelotas",
+            "colecoes": {
+                "docentes": {"resource_id": "b63c24da-d96d-4ee2-bdaf-f7a8c37f0007", "q" : "Professor"},
+            },
+        },
+
+        "ifsuldeminas": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.ifsuldeminas.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Sul_de_Minas",
+            "colecoes": {
+                "docentes": {"resource_id": "7db2014f-577f-4ec3-a6ab-2c7da2015f8b"},
+            },
+        },
+
+        "ifpb": { 
+            "consumer": "JSONConsumer",
+            "main_url": "https://dados.ifpb.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_da_Paraíba",
+            "colecoes": {
+                "docentes": {
+                    "resource": "dataset/26d67876-0cb2-41a4-83ed-7bde06eb736c/resource/0d03ee6a-2af1-4dde-9b3d-90419c48fabe/download/servidores.json",
+                    "key" : "cargo_emprego", "value" : "PROFESSOR"
+                    },
+            },
+        },
+
+
+        "ifrn": { 
+            "consumer": "JSONConsumer",
+            "main_url": "https://dados.ifrn.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
+            "colecoes": {
+                "docentes": {
+                    "resource": "dataset/0c5c1c1a-7af8-4f24-ba37-a9eda0baddbb/resource/c3f64d5b-f2df-4ef2-8e27-fb4f10a7c3ea/download/dados_extraidos_recursos_servidores.json",
+                    "key" : "cargo", "value" : "PROFESSOR"
+                    },
             },
         },
     },

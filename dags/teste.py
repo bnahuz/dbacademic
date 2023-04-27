@@ -21,6 +21,7 @@ config_dags = {
                 "NOME",
                 "nome",
                 "servidor",
+                "NOME SERVIDOR",
                 "SERVIDOR",
                 "Nome do Servidor",
                 "Nome",
@@ -49,9 +50,10 @@ config_dags = {
                 "TITULAÇÃO",
                 "NIVEL ESCOLARIDADE",
                 "Titulacao",
+                "TITULAÇÃO"
             ],
             "nome_lotacao": ["Órgão de Lotação (SIAPE)", "setor lotacao"],
-            "codigo_lotacao": ["id_unidade_lotacao", "CÓDIGO DA UNIDADE ORGANIZACIONAL"],
+            "codigo_lotacao": ["id_unidade_lotacao", "CÓDIGO DA UNIDADE ORGANIZACIONAL","setor_siape"],
             "email" : ["email"]
         },
         "discentes": {
@@ -215,12 +217,75 @@ config_dags = {
                 "docentes": {"resource_id": "2249c447-7ae3-440a-afca-aa8ac8bb0596"},
             },
         },
+
+
+        "uffs": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.uffs.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_da_Fronteira_Sul",
+            "colecoes": {
+                "docentes": {"resource_id": "1e801321-6e0b-4716-ba1d-ce79919e87da","q":"Professor"},
+            },
+        },
+
+        "unifei": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.unifei.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_de_Itajubá",
+            "colecoes": {
+                "docentes": {"resource_id": "50024421-d377-4184-ac23-e7f0ee3ad2c1", "q": "Professor"},
+            },
+        },
+
+        "ufpel": { 
+            "consumer": "CkanConsumer",
+            "main_url": "http://dados.ufpel.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_de_Pelotas",
+            "colecoes": {
+                "docentes": {"resource_id": "b63c24da-d96d-4ee2-bdaf-f7a8c37f0007", "q" : "Professor"},
+            },
+        },
+
+        "ifsuldeminas": { 
+            "consumer": "CkanConsumer",
+            "main_url": "https://dados.ifsuldeminas.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Sul_de_Minas",
+            "colecoes": {
+                "docentes": {"resource_id": "7db2014f-577f-4ec3-a6ab-2c7da2015f8b"},
+            },
+        },
+
+        "ifpb": { 
+            "consumer": "JSONConsumer",
+            "main_url": "https://dados.ifpb.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_da_Paraíba",
+            "colecoes": {
+                "docentes": {
+                    "resource": "dataset/26d67876-0cb2-41a4-83ed-7bde06eb736c/resource/0d03ee6a-2af1-4dde-9b3d-90419c48fabe/download/servidores.json",
+                    "key" : "cargo_emprego", "value" : "PROFESSOR"
+                    },
+            },
+        },
+
+
+        "ifrn": { 
+            "consumer": "JSONConsumer",
+            "main_url": "https://dados.ifrn.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
+            "colecoes": {
+                "docentes": {
+                    "resource": "dataset/0c5c1c1a-7af8-4f24-ba37-a9eda0baddbb/resource/c3f64d5b-f2df-4ef2-8e27-fb4f10a7c3ea/download/dados_extraidos_recursos_servidores.json",
+                    "key" : "cargo", "value" : "PROFESSOR"
+                    },
+            },
+        },
     },
 }
 
 instituicoes = config_dags["instituicoes"].items()
+print ("qt instituticoes ", len(instituicoes))
 
-instituicoes = {k: v for k, v in instituicoes  if k == "ufgd"}
+instituicoes = {k: v for k, v in instituicoes  if k == "ifpb"}
 import requests
 
 

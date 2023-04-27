@@ -1,6 +1,32 @@
 import requests
 import pandas as pd
 from time import sleep
+
+
+def filtro_chave_valor(dicionario, chave, valor):
+    if chave in dicionario and dicionario[chave] and valor in dicionario[chave] :
+        return True
+    return False
+
+class JSONConsumer:
+    def __init__(self, main_url, total = 10):
+        self.total = total
+        self.main_url = main_url
+
+    def request(self, **params) -> pd.DataFrame:
+        resource = params["resource"]
+        url = f"{self.main_url}/{resource}"
+        data = requests.get(url).json()
+
+        if "key" in params:
+            key = params["key"]
+            value = params["value"]
+            data = list(filter(lambda d: filtro_chave_valor(d, key, value), data))
+        df = pd.DataFrame(data[:self.total]) # nao sei se precisa disso
+        return df 
+
+    
+
 class CkanConsumer:
     def __init__(self, main_url, total = 10):
         #params = params
@@ -24,7 +50,7 @@ class CkanConsumer:
 
         
         #print (params)
-        response = requests.get(self.url, params=params,  verify=False) # deu erro no univasf
+        response = requests.get(self.url, params=params) # deu erro no univasf
         total = response.json()['result']['total']
         if total > self.total:
             total = self.total

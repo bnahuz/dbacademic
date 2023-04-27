@@ -50,8 +50,8 @@ class Docentes:
         self.matricula = Literal(dict["matricula"])
         if "sexo" in dict:
             self.sexo = Literal(dict["sexo"])
-        if "formacao" in dict and dict["formacao"] != None and dict["formacao"] in formacao_dic:
-            self.formacao = URIRef(formacao_dic[dict["formacao"]])
+        if "formacao" in dict and dict["formacao"] != None and dict["formacao"].upper() in formacao_dic:
+            self.formacao = URIRef(formacao_dic[dict["formacao"].upper()])
         if "codigo_lotacao" in dict and dict["codigo_lotacao"] != None:
             hash_code = hashcode ( dict["instituicao"], UNIDADES , dict["codigo_lotacao"])
             self.codigo_lotacao = URIRef( f"https://purl.org/dbacademic/resource#{hash_code}" )
