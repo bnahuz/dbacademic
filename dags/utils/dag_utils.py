@@ -32,7 +32,8 @@ def save_content_to_file(file, content):
 
 
 def extract (consumer, params):
-    return consumer.request(**params).to_dict('records')
+    data = consumer.request(**params).to_dict('records')
+    return data
 
 def transform (data, gen_mapper, dbpedia_url):
     mapper = mapper_generate (data[0], gen_mapper)   

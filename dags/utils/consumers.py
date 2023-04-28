@@ -1,31 +1,67 @@
 import requests
 import pandas as pd
+import json
+
 from time import sleep
 
 
-def filtro_chave_valor(dicionario, chave, valor):
-    if chave in dicionario and dicionario[chave] and valor in dicionario[chave] :
-        return True
-    return False
 
-class JSONConsumer:
-    def __init__(self, main_url, total = 10):
+class FileConsumer:
+    def __init__(self, main_url, total: int = None ):
+        self.main_url  =main_url
         self.total = total
-        self.main_url = main_url
+        
+    def request(self, **params ) -> pd.DataFrame:
 
-    def request(self, **params) -> pd.DataFrame:
-        resource = params["resource"]
-        url = f"{self.main_url}/{resource}"
-        data = requests.get(url).json()
+            data_type : str = "json"
+            n_tries : int = 5
 
-        if "key" in params:
-            key = params["key"]
-            value = params["value"]
-            data = list(filter(lambda d: filtro_chave_valor(d, key, value), data))
-        df = pd.DataFrame(data[:self.total]) # nao sei se precisa disso
-        return df 
+            resource = params["resource"]
+            if "data_type" in params:
+                data_type = params["data_type"]
 
-    
+            
+
+            self.url = f'{self.main_url}/{resource}'
+            print(f'[INFO] - Getting data from {self.url} : data_type = {data_type}')
+            if data_type == 'csv':
+                sep = ","
+                decimal = '.'
+
+                if "sep" in params and 'decimal' in params:
+                    sep = params["sep"]
+                    decimal = params["decimal"]
+                
+                data = pd.read_csv(self.url, sep=sep, decimal=decimal, encoding='ISO-8859-1')
+                
+                
+                
+            elif data_type == 'json':
+                headers = {
+                    'Content-Type': 'application/json'
+                }
+                response = requests.get(self.url, headers=headers)
+                for tries in range(n_tries):
+                    if response.status_code == 200:
+                        data = pd.read_json(self.url)                        
+                    elif response.status_code == 500:
+                        print(f"[ERROR] - Status Code 500: Internal Error, try number {tries + 1}, trying again.")
+                        sleep(10)
+                        continue
+                    else:
+                        raise Exception(f"[ERROR] - Status code {response.status_code}, {json.dumps(response)}")
+                
+            if "q" in params:
+                #colunas_str = data.dtypes[data.dtypes == 'str'].index
+                #data[colunas_str].fillna('Desconhecido', inplace=True) # todo
+                data.fillna('Desconhecido', inplace=True) ## se for tudo string, pode dar erro
+                data = data.query(params['q'])
+                print (data)
+                
+            if self.total:
+                data = data.iloc[:self.total] 
+
+            return data  
 
 class CkanConsumer:
     def __init__(self, main_url, total = 10):
