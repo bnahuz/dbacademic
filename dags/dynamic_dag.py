@@ -21,7 +21,6 @@ default_args = {
 
 
 
-
 config_dags = {
     "mapeamento": {
         "docentes": {
@@ -38,7 +37,7 @@ config_dags = {
                 "NomeServidor",
                 "nome_oficial"
             ],
-            "id": ["SIAPE",
+            "id": ["SIAPE", 
                 "Siape",
                 "siape",
                 "matricula",
@@ -48,7 +47,7 @@ config_dags = {
                 "vinculo_servidor",
                 "CodigoServidor",
             ],
-            "matricula": ["SIAPE","Siape","MATRICULA","siape", "matricula", "vinculo_servidor", "CodigoServidor", "_id"],
+            "matricula": ["Matrícula","SIAPE","Siape","MATRICULA","siape", "matricula", "vinculo_servidor", "CodigoServidor", "_id"],
             "sexo": ["sexo", "Sexo"],
             "formacao": [
                 "formacao",
@@ -264,31 +263,60 @@ config_dags = {
         },
 
         "ifpb": { 
-            "consumer": "JSONConsumer",
+            "consumer": "FileConsumer",
             "main_url": "https://dados.ifpb.edu.br",
             "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_da_Paraíba",
             "colecoes": {
                 "docentes": {
                     "resource": "dataset/26d67876-0cb2-41a4-83ed-7bde06eb736c/resource/0d03ee6a-2af1-4dde-9b3d-90419c48fabe/download/servidores.json",
-                    "key" : "cargo_emprego", "value" : "PROFESSOR"
+                    "q" : "cargo_emprego.str.contains('PROFESSOR')"
                     },
             },
         },
 
 
         "ifrn": { 
-            "consumer": "JSONConsumer",
+            "consumer": "FileConsumer",
             "main_url": "https://dados.ifrn.edu.br",
             "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
             "colecoes": {
                 "docentes": {
                     "resource": "dataset/0c5c1c1a-7af8-4f24-ba37-a9eda0baddbb/resource/c3f64d5b-f2df-4ef2-8e27-fb4f10a7c3ea/download/dados_extraidos_recursos_servidores.json",
-                    "key" : "cargo", "value" : "PROFESSOR"
+                    "q" : "cargo.str.contains('PROFESSOR')"
                     },
             },
         },
+
+        "ifro": { 
+            "consumer": "FileConsumer",
+            "main_url": "https://dados.ifro.edu.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
+            "colecoes": {
+                "docentes": {
+                    "resource": "dataset/cefffa4b-b662-438f-b2fa-1ab9fa35471c/resource/41b84d9d-135a-47f2-80e5-9da63123073d/download/docentes_disciplina_de_ingresso.csv",
+                    "data_type" : "csv"
+                    },
+            },
+        },
+
+        
+        "ufs": { 
+            "consumer": "FileConsumer",
+            "main_url": "https://dados.ufs.br",
+            "dbpedia_pt": "http://pt.dbpedia.org/resource/Instituto_Federal_do_Rio_Grande_do_Norte",
+            "colecoes": {
+                "docentes": {
+                    "resource": "dataset/docentes/resource/doc-csv-docentes-da-ufs/download/doc-csv-docentes-da-ufs.csv",
+                    "data_type" : "csv",
+                    #"sep": ";",
+                    #"decimals" : "."
+                    },
+            },
+        },
+        
     },
 }
+
 
 for institute, values in config_dags["instituicoes"].items():
 
