@@ -7,6 +7,7 @@ from utils.mongo import get_mongo_db, insert_many, drop_collection
 import utils.consumers as consumers
 import utils.models
 
+import requests
 import os
 
 from airflow.models import Variable
@@ -57,6 +58,65 @@ def dynamic_ttl (institute, collection, model_class):
         filename = f"/opt/airflow/download/{institute}_{collection}.ttl"
         save_content_to_file(filename, content)
     return {"ok": content[0:200] }
+
+
+def send_content (name, owner, content, file_name, token):
+    #url = f'https://api.data.world/v0/uploads/{owner}/{name}/files/{file_name}'
+    print (owner)
+    url = f'https://api.data.world/v0/uploads/{owner}/{name}/files/{file_name}'
+    print (url)
+    headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json',
+            }
+
+    
+    response = requests.put(url, data=content.encode('utf-8'), headers=headers)
+
+    if response.status_code == 200:
+        print('Conteúdo do arquivo enviado com sucesso!')
+    else:
+        print(f'Erro {response.status_code}: {response.text} , {url}')
+
+
+def create_dataset (name, owner, token):
+    name = name
+    description = name
+    tags = []
+    dataset = {
+        'title': name,
+        'description': description,
+        'tags': tags,
+        "visibility": "OPEN",
+    }
+
+    url = f'https://api.data.world/v0/datasets/{owner}'
+    headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json',
+            }
+    response = requests.post(url, json=dataset, headers=headers)
+
+    if response.status_code == 200:
+        print('Conjunto de dados criado com sucesso!')
+    else:
+        print(f'Erro {response.status_code}: {response.text}')
+
+
+def dynamic_ttl_2 (institute, collection, model_class):
+    db = get_mongo_db(institute)
+    mongo_collection = db[collection]
+    documents = list(mongo_collection.find())
+    content = serialize_to_rdf(documents, model_class)
+    local_save = int(Variable.get("local_save", default_var=0))
+    #create_dataset(f'dbacademic_{institute}')
+    
+    if local_save:
+        filename = f"/opt/airflow/download/{institute}_{collection}.ttl"
+        save_content_to_file(filename, content)
+    
+    return {"ok": content[0:200] }
+
 
 
 #####################################################

@@ -1,7 +1,7 @@
 import sys
 from datetime import timedelta
 
-from utils.dag_utils import  extract, transform,dynamic_ttl
+from utils.dag_utils import  extract, transform,dynamic_ttl, create_dataset, send_content
 
 from simpot.serialize import mapper_all,  serialize_to_rdf
 
@@ -192,7 +192,7 @@ config_dags = {
 
         "univasf": { 
             "consumer": "CkanConsumer",
-            "main_url": "http://dados.univasf.edu.br",
+            "main_url": "https://dados.univasf.edu.br",
             "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_do_Vale_do_São_Francisco",
             "colecoes": {
                 "docentes": {"resource_id": "de111b8a-9b29-460e-acd3-7fda0ac62e41"},
@@ -211,7 +211,7 @@ config_dags = {
 
         "ufgd": { 
             "consumer": "CkanConsumer",
-            "main_url": "http://dadosabertos.ufgd.edu.br",
+            "main_url": "https://dadosabertos.ufgd.edu.br",
             "dbpedia_pt": "http://pt.dbpedia.org/resource/Universidade_Federal_da_Grande_Dourados",
             "colecoes": {
                 "docentes": {"resource_id": "2249c447-7ae3-440a-afca-aa8ac8bb0596"},
@@ -310,20 +310,32 @@ config_dags = {
     },
 }
 
+# lento ufpel
+#unifespa  
+# fail ssl univasf ufgd 
+
 instituicoes = config_dags["instituicoes"].items()
 print ("qt instituticoes ", len(instituicoes))
-
-instituicoes = {k: v for k, v in instituicoes  if k == "ufs"}
+# ufpel, lento
+instituicoes = {k: v for k, v in instituicoes  if k not in [ "univasf", "ufpel",  "ufgd"]}
+#instituicoes = {k: v for k, v in instituicoes  if k  in ["ifro"]}
 import requests
 
 
+
+
+
+
+dataset_name = 'dbacademic'
+create_dataset(dataset_name, "dbacademic", token)
 
 for institute, values in instituicoes.items():
     collections = values["colecoes"]
     main_url = values["main_url"]
     dbpedia_url = values["dbpedia_pt"]
 
-    consumer = getattr(consumers, values['consumer']) (main_url, 4)
+    consumer = getattr(consumers, values['consumer']) (main_url, 100000)
+ 
 
     for collection, params in collections.items():
         print (institute,collection,params)
@@ -335,5 +347,8 @@ for institute, values in instituicoes.items():
         data = transform (data, generic_mapper, dbpedia_url)
         print (data)
         class_ = getattr(utils.models, collection.capitalize()) 
-        ttl = serialize_to_rdf(data, class_)
-        print (ttl)
+        ttl_content = serialize_to_rdf(data, class_)
+        send_content(dataset_name, "dbacademic", ttl_content, f'{institute}_{collection}.ttl', token)
+
+        #dynamic_ttl_2(institute)
+        print (ttl_content)

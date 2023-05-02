@@ -27,7 +27,6 @@ formacao_dic = {
     "DOUTORADO":"https://w3id.org/ccso/ccso#Doctorate",
     "ESPECIALIZAÇÃO": "https://w3id.org/ccso/ccso#Certificate",
     "GRADUAÇÃO":"https://w3id.org/ccso/ccso#Bachelor",
-    "DESCONHECIDA": None,
 }
 
 
