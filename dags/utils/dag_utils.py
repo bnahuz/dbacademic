@@ -54,9 +54,17 @@ def dynamic_ttl (institute, collection, model_class):
     documents = list(mongo_collection.find())
     content = serialize_to_rdf(documents, model_class)
     local_save = int(Variable.get("local_save", default_var=0))
+    dw_save = int(Variable.get("dw_save", default_var=0))
     if local_save:
         filename = f"/opt/airflow/download/{institute}_{collection}.ttl"
         save_content_to_file(filename, content)
+    if dw_save:
+        dw_settings = Variable.get("dw_settings", deserialize_json=True)
+        token = dw_settings["token"]
+        dataset_name = dw_settings["dataset"]
+        owner = dw_settings["owner"]
+        send_content(dataset_name, owner, content, f'{institute}_{collection}.ttl', token)
+
     return {"ok": content[0:200] }
 
 
@@ -103,19 +111,6 @@ def create_dataset (name, owner, token):
         print(f'Erro {response.status_code}: {response.text}')
 
 
-def dynamic_ttl_2 (institute, collection, model_class):
-    db = get_mongo_db(institute)
-    mongo_collection = db[collection]
-    documents = list(mongo_collection.find())
-    content = serialize_to_rdf(documents, model_class)
-    local_save = int(Variable.get("local_save", default_var=0))
-    #create_dataset(f'dbacademic_{institute}')
-    
-    if local_save:
-        filename = f"/opt/airflow/download/{institute}_{collection}.ttl"
-        save_content_to_file(filename, content)
-    
-    return {"ok": content[0:200] }
 
 
 
