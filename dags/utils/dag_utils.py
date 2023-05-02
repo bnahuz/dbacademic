@@ -114,6 +114,44 @@ def create_dataset (name, owner, token):
 
 
 
+def create_dag_ttl (dag_id:str, config_dags, schedule_interval, start_date, default_args):
+
+
+    dag = DAG(
+        f'{dag_id}',
+        default_args=default_args,
+        description=f'A simple DAG to convert and save TTL',
+        schedule_interval=schedule_interval,
+        start_date=start_date
+    )
+
+    tasks = []
+
+    instituicoes = config_dags["instituicoes"].items()
+
+    for institute, values in instituicoes:
+        collections = values["colecoes"]
+
+        ttl_task = []
+
+   
+        for collection, params in collections.items():
+            class_ = getattr(utils.models, collection.capitalize()) 
+            oper = PythonOperator(
+                task_id=f'ttl_{institute}_{collection}',
+                python_callable= dynamic_ttl,
+                op_kwargs={"institute":institute, "collection":collection, "model_class":class_},
+                dag=dag,
+            )
+            ttl_task.append(oper)
+
+        #chain(ttl_task)
+
+
+    return dag
+
+
+
 #####################################################
 ###
 ####################################################
