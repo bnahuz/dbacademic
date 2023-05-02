@@ -32,7 +32,8 @@ class FileConsumer:
                     sep = params["sep"]
                     decimal = params["decimal"]
                 
-                data = pd.read_csv(self.url, sep=sep, decimal=decimal, encoding='ISO-8859-1')
+                #data = pd.read_csv(self.url, sep=sep, decimal=decimal, encoding='ISO-8859-1')
+                data = pd.read_csv(self.url, sep=sep, decimal=decimal, encoding='UTF-8') #ifro é utf8, talvez vai ter que virar parametro
                 
                 
                 
