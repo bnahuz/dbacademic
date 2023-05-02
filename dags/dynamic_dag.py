@@ -329,3 +329,6 @@ for institute, values in config_dags["instituicoes"].items():
         start_date = days_ago(0), 
         default_args = default_args)
     globals()[dag.dag_id] = dag
+
+dag_ttl = create_dag_ttl ("transform_save_ttl", config_dags, '@once',  days_ago(0), default_args)
+globals()[dag_ttl.dag_id] = dag_ttl
