@@ -1,10 +1,11 @@
 import sys
 sys.path.append('/opt/airflow/')
 from datetime import timedelta
-from airflow import DAG
-from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from plugins.utils.dag_utils import *
+from utils.dag_utils import *
+
+
+import json
 
 default_args = {
     'owner': 'airflow',
@@ -18,17 +19,21 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-config_dags = {
-    ufrn: ['docentes', 'discentes', 'courses'],
-    ufpi: ['docentes', 'discentes', 'courses'],
-}
 
-for institute, collections in config_dags.items():
+with open('/opt/airflow/dags/settings.json', 'r') as arquivo:
+    config_dags = json.load(arquivo)
+
+for institute, values in config_dags["instituicoes"].items():
+
     dag = dynamic_create_dag(
-        dag_id = f'{institute.__name__}_test', 
-        institute = institute, 
-        collections = collections, 
-        schedule_interval = timedelta(days=1), 
+        dag_id = f'{institute}', 
+        institute = institute,  
+        conf = values , 
+        generic_mapper = config_dags["mapeamento"],
+        schedule_interval = '@once', 
         start_date = days_ago(0), 
         default_args = default_args)
     globals()[dag.dag_id] = dag
+
+dag_ttl = create_dag_ttl ("transform_save_ttl", config_dags, '@once',  days_ago(0), default_args)
+globals()[dag_ttl.dag_id] = dag_ttl
